@@ -112,8 +112,20 @@
       loginForm.style.display = (loginForm.style.display === "none" || loginForm.style.display === "") ? "block" : "none";
       document.getElementById("welcomeMessage").style.display = "none";
     }
+    
+    function loginUser() {
+      var enteredUsername = document.getElementById("username").value;
+      var enteredPassword = document.getElementById("password").value;
 
-   
+      // Compara las credenciales con las almacenadas en secrets.js
+      if (enteredUsername === credentials.username && enteredPassword === credentials.password) {
+        document.getElementById("welcomeMessage").style.display = "block";
+        return false; 
+      } else {
+        alert("Credenciales incorrectas");
+        return false; 
+      }
+    }
   </script>
 
 </body>
