@@ -2,34 +2,34 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-from credenciales_correo import usuario_correo, contraseña_correo
+# Configuración del servidor SMTP y credenciales
+smtp_server = 'smtp.gmail.com'
+smtp_port = 587  # El puerto puede variar según el proveedor de correo
+smtp_username = 'ninovargas@gmail.com'
+smtp_password = 'hzvv tzhs lgch wrrr'
 
-def enviar_correo(destinatario, asunto, cuerpo):
-    # Servidor SMTP
-    servidor_smtp = "smtp.gmail.com"
-    puerto_smtp = 587
+# Configuración del mensaje
+sender_email = 'ninovargas@gmail.com'
+receiver_email = 'ninovargas@yopmail.com'
+subject = 'Correo de Prueba'
+body = 'Este es un correo de prueba para automatizar envio de correo con Python en Jenkins'
 
-    # Mensaje de correo
-    mensaje = MIMEMultipart()
-    mensaje['From'] = usuario_correo
-    mensaje['To'] = destinatario
-    mensaje['Subject'] = asunto
-    mensaje.attach(MIMEText(cuerpo, 'plain'))
+# Construcción del mensaje
+message = MIMEMultipart()
+message['From'] = sender_email
+message['To'] = receiver_email
+message['Subject'] = subject
 
-    # Conecta al servidor SMTP y envía el correo
-    try:
-        servidor = smtplib.SMTP(servidor_smtp, puerto_smtp)
-        servidor.starttls()
-        servidor.login(usuario_correo, contraseña_correo)
-        servidor.sendmail(usuario_correo, destinatario, mensaje.as_string())
-        servidor.quit()
-        print("Correo enviado correctamente.")
-    except Exception as e:
-        print(f"Error al enviar el correo: {e}")
+# Adjuntar el cuerpo del mensaje
+message.attach(MIMEText(body, 'plain'))
 
-# Aplicación
-destinatario = "123test12345@yopmail.com"
-asunto = "Prueba de correo desde Python"
-cuerpo = "Hola, esto es un mensaje de prueba desde Python."
-
-enviar_correo(destinatario, asunto, cuerpo)
+# Establecer la conexión al servidor SMTP y enviar el mensaje
+try:
+  with smtplib.SMTP(smtp_server, smtp_port) as server:
+    server.starttls()
+    server.login(smtp_username, smtp_password)
+    text = message.as_string()
+    server.sendmail(sender_email, receiver_email, text)
+  print('Correo enviado exitosamente.')
+except Exception as e:
+  print(f'Error al enviar el correo: {e}')
